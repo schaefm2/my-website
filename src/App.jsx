@@ -1,18 +1,26 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from "react";
+import Nav from "./Nav/Nav";
+import { Outlet } from "react-router-dom";
+
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [red, setRed] = useState(0);
+
+  const handleMouseMove = (event) => {
+    const { clientX } = event;
+    const redValue = Math.floor(clientX % 255);
+    setRed(redValue);
+  };
 
   return (
-    <>
-      <div>
-      </div>
-      <h1>HELLOOOOOOOOOOOOOOOOOOOOoo</h1>
-    </>
-  )
+    <div className="App">
+      <Nav />
+      <main>
+        <Outlet />
+      </main>
+    </div>
+  );
 }
 
-export default App
+export default App;
