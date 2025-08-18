@@ -2,7 +2,7 @@ import React from "react";
 import MyCanvas from "../MyCanvas";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
-import ProjPre from "../components/ProjPre";
+import ProjPre from "../components/Project/ProjPre";
 
 const HomePage = () => {
   const scrollToSection = (id) => {
@@ -16,7 +16,7 @@ const HomePage = () => {
       <MyCanvas />
       <h1 className="text-white">Hello I'm Max Schaefer</h1>
       <p className="text-sky-200">
-        I'm a computer science student at Western Washington University
+        I'm a recent computer science gradute from Western Washington University
       </p>
       <button
         className="mt-40 !bg-transparent text-sky-200 !border-sky-200"

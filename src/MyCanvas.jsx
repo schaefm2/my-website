@@ -1,10 +1,14 @@
-import React from "react";
 import Sketch from "react-p5";
 
 const MyCanvas = () => {
   let particles = [];
   let spacex = 50;
-  let spacey = 50;
+  let spacey = 80;
+
+  let xInterval = 20;
+  let yInterval = 10;
+
+  let numStars;
 
   const setup = (p5, canvasParentRef) => {
     p5.createCanvas(window.innerWidth, window.innerHeight).parent(
@@ -14,14 +18,23 @@ const MyCanvas = () => {
     p5.canvas.style.top = "0";
     p5.canvas.style.left = "0";
     p5.canvas.style.zIndex = "-1";
+
+    numStars = xInterval * yInterval;
+    console.log(numStars);
   };
 
   const draw = (p5) => {
     p5.background(20, 20, 40, 100);
-    if (particles.length < 100) {
+
+    // generate particles first time
+    if (particles.length < numStars) {
       particles.push(new Particle(p5, spacex, spacey));
-      spacex = spacex > p5.width ? 0 : spacex + 50;
-      spacey = spacey > p5.height ? 0 : spacey + 50;
+      if (spacex > p5.width - 50) {
+        spacex = 10;
+        spacey += p5.height / yInterval;
+      } else {
+        spacex += p5.width / xInterval;
+      }
     }
 
     for (let i = particles.length - 1; i >= 0; i--) {
@@ -65,7 +78,7 @@ const MyCanvas = () => {
       let dx = this.x - this.p5.mouseX;
       let dy = this.y - this.p5.mouseY;
       let distance = this.p5.sqrt(dx * dx + dy * dy);
-      if (distance < 50) {
+      if (distance < 100) {
         this.x += dx * 0.05;
         this.y += dy * 0.05;
       }
