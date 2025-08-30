@@ -2,157 +2,128 @@ import Sketch from "react-p5";
 
 const MyCanvas = () => {
   let particles = [];
-  let spacex = 50;
-  let spacey = 80;
 
-  let xInterval = 20;
-  let yInterval = 10;
-
-  let numStars;
+  const PARTICLE_COUNT = 200;
+  const EDGE_TRIGGER_DISTANCE = 30;
 
   const setup = (p5, canvasParentRef) => {
-    p5.createCanvas(window.innerWidth, window.innerHeight).parent(
-      canvasParentRef
-    );
-    p5.canvas.style.position = "fixed"; // Keep it fixed as background
+    p5.createCanvas(window.innerWidth, window.innerHeight).parent(canvasParentRef);
+    p5.canvas.style.position = "fixed";
     p5.canvas.style.top = "0";
     p5.canvas.style.left = "0";
     p5.canvas.style.zIndex = "-1";
 
-    numStars = xInterval * yInterval;
-    console.log(numStars);
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      particles.push(new Particle(p5));
+    }
   };
 
   const draw = (p5) => {
-    p5.background(20, 20, 40, 100);
+    p5.clear();
+    p5.background(15, 15, 30, 240);
 
-    // generate particles first time
-    if (particles.length < numStars) {
-      particles.push(new Particle(p5, spacex, spacey));
-      if (spacex > p5.width - 50) {
-        spacex = 10;
-        spacey += p5.height / yInterval;
-      } else {
-        spacex += p5.width / xInterval;
-      }
-    }
-
-    for (let i = particles.length - 1; i >= 0; i--) {
-      particles[i].update();
-      particles[i].show();
-      if (particles[i].finished()) {
-        particles.splice(i, 1);
-      }
+    for (let particle of particles) {
+      particle.update(p5);
+      particle.display(p5);
     }
   };
 
-  function star(x, y, radius1, radius2, npoints, p5) {
-    let angle = p5.TWO_PI / npoints;
-    let halfAngle = angle / 2.0;
-    p5.beginShape();
-    for (let a = 0; a < p5.TWO_PI; a += angle) {
-      let sx = x + p5.cos(a) * radius2;
-      let sy = y + p5.sin(a) * radius2;
-      p5.vertex(sx, sy);
-      sx = x + p5.cos(a + halfAngle) * radius1;
-      sy = y + p5.sin(a + halfAngle) * radius1;
-      p5.vertex(sx, sy);
-    }
-    p5.endShape(p5.CLOSE);
-  }
+  const removeCanvas = (p5) => {
+    p5.remove();
+  };
 
   class Particle {
-    constructor(p5, x, y) {
-      this.p5 = p5;
-      this.x = x;
-      this.y = y;
-      this.alpha = 50;
-      this.shootingx = false;
-      this.shootingy = false;
-      this.timer = 100;
-      this.direction = 1;
+    constructor(p5) {
+      this.reset(p5);
     }
 
-    update() {
-      this.y += this.p5.sin(this.p5.frameCount * 0.05 + this.x * 0.01) * 0.05;
-      let dx = this.x - this.p5.mouseX;
-      let dy = this.y - this.p5.mouseY;
-      let distance = this.p5.sqrt(dx * dx + dy * dy);
-      if (distance < 100) {
-        this.x += dx * 0.05;
-        this.y += dy * 0.05;
-      }
-      this.shooting();
+    reset(p5) {
+      this.x = p5.random(p5.width);
+      this.y = p5.random(p5.height);
+      this.vx = p5.random(-0.2, 0.2);
+      this.vy = p5.random(-0.2, 0.2);
+      this.size = p5.random(2, 4);
+      this.alpha = p5.random(100, 255);
+      this.isShooting = false;
+      this.shootDirection = p5.random([[-1, 0], [1, 0], [0, -1], [0, 1]]);
+      this.starLife = 0;
+    }
 
-      for (let other of particles) {
-        if (other !== this) {
-          let dx = this.x - other.x;
-          let dy = this.y - other.y;
-          let distance = this.p5.sqrt(dx * dx + dy * dy);
-          if (distance < 20) {
-            this.x += dx * 0.1;
-            this.y += dy * 0.1;
-          }
+    update(p5) {
+      if (!this.isShooting) {
+        
+        this.x += this.vx;
+        this.y += this.vy;
+
+        const dx = this.x - p5.mouseX;
+        const dy = this.y - p5.mouseY;
+        const dist = p5.sqrt(dx * dx + dy * dy);
+        if (dist < 100) {
+          this.vx += dx * 0.0005;
+          this.vy += dy * 0.0005;
+        }
+        else{
+          if (this.vx > 0.2 || this.vx < -0.2) this.vx *= 0.95;
+          if (this.vy > 0.2 || this.vy < -0.2) this.vy *= 0.95;
+        }
+
+        if (
+          this.x < EDGE_TRIGGER_DISTANCE ||
+          this.x > p5.width - EDGE_TRIGGER_DISTANCE ||
+          this.y < EDGE_TRIGGER_DISTANCE ||
+          this.y > p5.height - EDGE_TRIGGER_DISTANCE
+        ) {
+          this.isShooting = true;
+          this.starLife = 100;
+        }
+      } else {
+        this.x += this.shootDirection[0] * 4;
+        this.y += this.shootDirection[1] * 4;
+        this.starLife--;
+
+        if (this.starLife <= 0 || this.outOfBounds(p5)) {
+          this.reset(p5);
         }
       }
-      // this.alpha -= 5;
     }
 
-    finished() {
-      return this.alpha < 0;
+    outOfBounds(p5) {
+      return (
+        this.x < -50 || this.x > p5.width + 50 || this.y < -50 || this.y > p5.height + 50
+      );
     }
 
-    shooting() {
-      const edgeBuffer = 60;
-
-      if (this.x < 0 || this.x > this.p5.width) {
-        this.shootingx = true;
-        this.direction = this.x < 0 ? 1 : -1;
-      }
-
-      if (this.y < edgeBuffer || this.y > this.p5.height) {
-        this.shootingy = true;
-        this.direction = this.y < edgeBuffer ? 1 : -1;
-      }
-
-      if (this.shootingx) {
-        this.x += 5 * this.direction;
-        this.handleShootingReset();
-        this.createStar();
-      }
-
-      if (this.shootingy) {
-        this.y += 5 * this.direction;
-        this.handleShootingReset();
-        this.createStar();
+    display(p5) {
+      if (this.isShooting) {
+        p5.push();
+        p5.translate(this.x, this.y);
+        p5.rotate(p5.frameCount / 20);
+        this.drawStar(p5, 0, 0, 2, 6, 5);
+        p5.pop();
+      } else {
+        p5.noStroke();
+        p5.fill(255, this.alpha);
+        p5.circle(this.x, this.y, this.size);
       }
     }
 
-    handleShootingReset() {
-      this.timer--;
-      if (this.timer === 0) {
-        this.shootingx = false;
-        this.shootingy = false;
-        this.timer = 100;
+    drawStar(p5, x, y, r1, r2, n) {
+      const angle = p5.TWO_PI / n;
+      const halfAngle = angle / 2;
+      p5.beginShape();
+      for (let a = 0; a < p5.TWO_PI; a += angle) {
+        let sx = x + p5.cos(a) * r2;
+        let sy = y + p5.sin(a) * r2;
+        p5.vertex(sx, sy);
+        sx = x + p5.cos(a + halfAngle) * r1;
+        sy = y + p5.sin(a + halfAngle) * r1;
+        p5.vertex(sx, sy);
       }
-    }
-
-    createStar() {
-      this.p5.push();
-      this.p5.translate(this.x, this.y);
-      this.p5.rotate(this.p5.frameCount / -100.0);
-      star(0, 0, 5, 15, 5, this.p5);
-      this.p5.pop();
-    }
-
-    show() {
-      this.p5.noStroke();
-      this.p5.fill(255, this.alpha);
-      this.p5.ellipse(this.x, this.y, 10);
+      p5.endShape(p5.CLOSE);
     }
   }
 
-  return <Sketch setup={setup} draw={draw} />;
+  return <Sketch setup={setup} draw={draw} cleanup={removeCanvas} />;
 };
 
 export default MyCanvas;

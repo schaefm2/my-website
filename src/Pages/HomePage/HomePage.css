@@ -1,0 +1,35 @@
+.homepage-container {
+    width: 100%;
+    margin: 0;
+    align-items: center;
+    text-align: center;
+}
+
+.intro-section {
+    height: 100vh;
+    justify-content: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.intro-section h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+    color: #BAE6FD;
+}
+
+button {
+    border-radius: 12;
+    color: #BAE6FD;
+    margin-top: 40px;
+    background-color: transparent;
+    border: 2px solid #BAE6FD;
+    border-radius: 20px;
+    padding: 10px 20px;
+}
+
+

@@ -1,0 +1,9 @@
+
+.image-container {
+    width: 400px;
+    height: 170px;
+    background-image: url('../../assets/final_launch.png');
+    background-repeat: no-repeat;
+    background-size: contain; /* ✅ Fix cropping */
+    background-position: center; /* ✅ Center image */
+}
