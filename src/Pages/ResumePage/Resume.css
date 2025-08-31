@@ -1,0 +1,76 @@
+.resume-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    margin: 0;
+    padding: 40px 0;
+    text-align: center;
+}
+
+.image-container {
+    width: 400px;
+    height: 170px;
+    background-size: contain; 
+    background-position: center; 
+    border-radius: 20px;
+}
+.resume-image{  
+    width: 300px;
+    height: auto;
+    margin: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.document-container {
+    flex-direction: column;
+    margin-top: 60px;
+    border: 2px solid #ccc;
+    /* light gray border */
+    border-radius: 12px;
+    /* rounded corners */
+    padding: 20px;
+    background-color: #f9f9f9;
+    /* optional: light background */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    /* subtle shadow */
+    max-width: 90%;
+    /* don't stretch full width */
+    overflow: auto;
+    max-height: 90vh;
+    /* or whatever fits your layout */
+}
+
+.pdf-document {
+    display: flex;
+    margin: 10px;
+}
+
+.scale-container{
+    display: flex;
+    margin-top: auto;
+    top: 0;
+    width: 100px
+}
+
+.scale-button{
+    position: relative;
+    border-radius: 12px;
+    color: #BAE6FD;
+    margin: 0 10px;
+    background-color: black;
+    border: 2px solid #BAE6FD;
+    border-radius: 20px;
+    padding: 10px 20px;
+    width: fit-content;
+    height: fit-content;
+}
+
+.download-link {
+    margin-top: 20px;
+    font-size: 1.2em;
+    color: white;
+    text-decoration: none;
+}

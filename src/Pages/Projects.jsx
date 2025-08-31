@@ -3,13 +3,7 @@ import ProjSideBar from "../components/Project/ProjSideBar";
 import Project from "../components/Project/Project";
 import fallingSandImg from "../assets/falling_sand.png";
 import chaosImg from "../assets/chaos-screenshot.png";
-const Projects = () => {
-  const [displayedProject, setDisplayedProject] = useState({
-    name: "Falling Sand",
-    description: "Left click and drag to create sand particles!",
-    repoLink: "https://schaefm2.github.io/FallingSand/",
-    imgSrc: fallingSandImg,
-  });
+
   const projectNames = {
     "School Projects": [
       "Chaos Engineering Senior Project",
@@ -57,6 +51,14 @@ const Projects = () => {
       imgSrc: fallingSandImg,
     },
   ];
+
+const Projects = () => {
+  const [displayedProject, setDisplayedProject] = useState({
+    name: "Falling Sand",
+    description: "Left click and drag to create sand particles!",
+    repoLink: "https://schaefm2.github.io/FallingSand/",
+    imgSrc: fallingSandImg,
+  });
 
   const handleProjectChange = (name) => {
     console.log("Changeing project to:", name);

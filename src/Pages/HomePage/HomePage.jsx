@@ -26,15 +26,13 @@ const HomePage = () => {
         <button
           onClick={() => scrollToSection("project-preview")}
         >
-          See my projects
+          See More
           <FontAwesomeIcon
             icon={faArrowDown}
             className="mr-2 text-sky-200 ml-5"
           />
         </button>
       </header>
-
-
       <ProjPre />
     </div>
   );

@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 const Nav = () => {
   return (
     <div>
-      <nav className="fixed top-0 left-0 w-full flex justify-between bg-gray-800 p-4">
+      <nav className="fixed top-0 left-0 w-full flex justify-between bg-gray-800 p-4 z-10 items-center">
         <ul className="flex space-x-4 text-white text-lg">
           <NavLink to="/projects">
             <li>Projects</li>
