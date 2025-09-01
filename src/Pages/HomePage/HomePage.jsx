@@ -17,7 +17,6 @@ const HomePage = () => {
   };
   return (
     <div className="homepage-container">
-      <MyCanvas key={location.pathname} />
       <header className="intro-section">
         <h1 className="text-white">Hello I'm Max Schaefer</h1>
         <p className="text-sky-200">

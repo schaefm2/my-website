@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./SideBar.css"; // Make sure the path is correct
 
 const ProjSideBar = ({ projectNames, changeProject }) => {
   const [extendedCategories, setExtendedCategories] = useState({});
@@ -11,32 +12,31 @@ const ProjSideBar = ({ projectNames, changeProject }) => {
   };
 
   return (
-    <div className="flex mr-0">
-      <aside
-        id="projectSideBar"
-        className="top-15 h-screen w-100 bg-gray-600 p-4 overflow-y-auto flex flex-col items-center justify-start"
-      >
-        <h1 className="text-blue-200 font-bold mb-4 self-center m-5 text-2xl">
-          Projects
-        </h1>
+    <div className="proj-sidebar-container">
+      <aside id="projectSideBar">
+        <h1 className="project-title">Projects</h1>
         {Object.entries(projectNames).map(([category, projects]) => (
-          <div key={category} className="w-full flex flex-col items-center">
-            <h4 className="text-blue-500 font-bold flex items-center">
-              {category}
-              <button
-                onClick={() => toggleCategory(category)}
-                className="ml-2"
-                aria-label={`Toggle ${category} Projects`}
-              >
-                <span>{extendedCategories[category] ? "▼" : "►"}</span>
-              </button>
-            </h4>
+          <div key={category} className="category-container">
+
+            <button
+              onClick={() => toggleCategory(category)}
+              className="toggle-button"
+              aria-label={`Toggle ${category} Projects`}
+            >
+              <h4 className="category-header">
+                {category}
+
+              </h4>
+
+              <span className="button-span">{extendedCategories[category] ? "▼" : "►"}</span>
+            </button>
+
             {extendedCategories[category] && (
               <ul>
                 {projects.map((project, idx) => (
                   <h6
                     onClick={() => changeProject(project)}
-                    className="text-gray-950 hover:text-blue-500 cursor-pointer"
+                    className="project-item"
                     key={idx}
                   >
                     {project}

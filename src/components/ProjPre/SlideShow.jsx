@@ -27,7 +27,7 @@ export const SlideShow = ({images, to, content}) => {
             onMouseLeave={() => setHovering(false)}
             style={{
                 backgroundImage: `url(${images[bgIndex]})`,
-                transition: "background-image 0.8s ease-in-out",
+                transition: "background-image 0.5s ease-in-out",
             }}
             onClick={() =>navigate(to)}
         >
